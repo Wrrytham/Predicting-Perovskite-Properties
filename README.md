@@ -17,6 +17,34 @@ Three GNN architectures are trained and compared, along with a composition-only 
 
 ---
 
+## Results
+
+All three GNN architectures significantly outperform conventional ML methods on both targets.
+
+**Formation Energy** (test set, best results across featurizers):
+
+| Model | MAE (eV/atom) | RMSE (eV/atom) | R² |
+|---|---|---|---|
+| GAT (GNN) | 0.153 | 0.221 | **0.947** |
+| GraphSAGE | 0.165 | 0.259 | 0.928 |
+| GCN | 0.168 | 0.262 | 0.926 |
+
+**Band Gap** (test set, best results across featurizers):
+
+| Model | MAE (eV) | RMSE (eV) | R² |
+|---|---|---|---|
+| GraphSAGE | 0.502 | 0.696 | **0.819** |
+| GAT (GNN) | 0.544 | 0.739 | 0.788 |
+| GCN | 0.551 | 0.742 | 0.794 |
+
+**Key findings:**
+- Formation energy R² consistently exceeds **0.92** across all models and featurizers, with the best result reaching **R² = 0.947** (GAT).
+- Band gap R² ranges from **0.74 to 0.82**, with MAE roughly 3× larger than formation energy — reflecting the higher sensitivity of electronic properties to subtle structural details.
+- GraphSAGE achieves the best overall band gap prediction (R² = 0.819 with Oliynyk features), while GAT leads on formation energy.
+- Adding explicit CBFV featurizers (Jarvis, Magpie, Oliynyk) provides little change for formation energy but offers modest gains for band gap — GraphSAGE + Oliynyk and GCN + Magpie showed the most consistent benefit.
+
+---
+
 ## Repository Structure
 
 ```
@@ -194,7 +222,7 @@ Each model is evaluated on:
 - **RMSE** — Root Mean Squared Error
 - **R²** — Coefficient of determination
 
-Reported separately for formation energy and band gap on both training and test splits. If a `y_scaler` is available, metrics are reported in the original physical units (eV/atom and eV).
+Reported separately for formation energy and band gap on both training and test splits. Metrics are reported in original physical units (eV/atom and eV) after inverse-transforming the standardized targets.
 
 ---
 
